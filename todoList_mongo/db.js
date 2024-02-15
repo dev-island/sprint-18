@@ -1,4 +1,6 @@
-const connectUrl = process.env.MONGO_URI;
+const connectUrl =
+  "mongodb+srv://andrew:admin@cluster0.w7eo9mc.mongodb.net/?retryWrites=true";
+// const connectUrl = process.env.MONGO_URI;
 const mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;

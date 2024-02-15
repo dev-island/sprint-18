@@ -15,6 +15,7 @@ exports.create = async (req, res) => {
     title: req.body.title,
     description: req.body.description,
     status: 'incomplete',
+    tags: req.body.tags,
   });
 
   await todo
