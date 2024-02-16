@@ -1,20 +1,31 @@
 import { FC } from "react";
 import { useState, useEffect } from "react";
-import { Flex, VStack, Box, Text, Image } from "@chakra-ui/react";
+import {
+  Flex,
+  VStack,
+  Box,
+  Text,
+  Image,
+  useDisclosure,
+} from "@chakra-ui/react";
 
-import { PokemonColors } from "../../constants";
+import { PokemonColors } from "../../constants/PokemnonColors";
 
 import PokemonTypes from "./Types";
 import Abilities from "./Abilities";
 import Stats from "./Stats";
 import Moves from "./Moves";
 import {
+  Pokemon,
   PokemonAbilities,
   PokemonMove,
   PokemonSprites,
   PokemonStat,
   PokemonType,
 } from "../../types";
+import usePokedex from "../../hooks/usePokedex";
+import CatchPokemon from "../CatchPokemon";
+import useAuthContext from "../../hooks/useAuthContext";
 
 type Sprite = "front_default" | "back_default";
 
@@ -29,7 +40,7 @@ export type Props = {
   moves: PokemonMove[];
 };
 
-const PokemonDetail: FC<Props> = ({
+const PokemonDetail: FC<Pokemon> = ({
   name,
   height,
   weight,
@@ -38,8 +49,15 @@ const PokemonDetail: FC<Props> = ({
   types,
   stats,
   moves,
+  id,
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isAuthenticated } = useAuthContext();
+  const { catchPokemon, updateNickname, loading, checkHasCaught } =
+    usePokedex();
   const [img, setImg] = useState<Sprite>("front_default");
+
+  const hasCaught = checkHasCaught(id);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -53,21 +71,57 @@ const PokemonDetail: FC<Props> = ({
     };
   }, [img]);
 
-  const abilitiesStr = abilities
-    .map(({ ability }) => ability.name)
-    .join(", ");
+  const abilitiesStr = abilities.map(({ ability }) => ability.name).join(", ");
+
+  const handleCatch = async () => {
+    await catchPokemon({
+      name,
+      height,
+      weight,
+      abilities,
+      sprites,
+      types,
+      stats,
+      moves,
+      id,
+    });
+  };
+
+  const handleUpdate = async (nickname: string) => {
+    await updateNickname(nickname);
+    onClose();
+  };
 
   return (
     <>
-      <Text
-        fontWeight="Bold"
-        fontSize="36px"
-        margin="20px 5px 5px"
-        textTransform="capitalize"
-        textAlign="center"
+      <Flex
+        justify="center"
+        flexDir="column"
+        align="center"
+        position="relative"
       >
-        {name}
-      </Text>
+        <Text
+          fontWeight="Bold"
+          fontSize="36px"
+          margin="20px 5px 5px"
+          textTransform="capitalize"
+          textAlign="center"
+        >
+          {name}
+        </Text>
+        {hasCaught && <Text>Caught</Text>}
+        {isAuthenticated && (
+          <CatchPokemon
+            name={name}
+            handleUpdate={handleUpdate}
+            handleCatch={handleCatch}
+            isOpen={isOpen}
+            onClose={onClose}
+            onOpen={onOpen}
+            loading={loading}
+          />
+        )}
+      </Flex>
 
       <Flex
         h={{ base: "auto", md: "100vh" }}
@@ -83,11 +137,7 @@ const PokemonDetail: FC<Props> = ({
               alt={name}
             />
           </Box>
-          <Abilities
-            height={height}
-            weight={weight}
-            abilities={abilitiesStr}
-          />
+          <Abilities height={height} weight={weight} abilities={abilitiesStr} />
         </VStack>
 
         <VStack w="full" h="full" p={5} spacing={5} alignItems="flex-start">

@@ -1,16 +1,12 @@
 import { FC } from "react";
 import { Card, Text, Image, Center } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 export type Props = {
   name: string;
   id: number;
+  nickname?: string;
 };
 
-const PokemonCard: FC<Props> = ({ name, id }) => {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(`/pokemon/${id}`);
-  };
+const CaughtPokemonCard: FC<Props> = ({ name, id, nickname }) => {
   return (
     <Card
       variant="elevated"
@@ -21,20 +17,21 @@ const PokemonCard: FC<Props> = ({ name, id }) => {
       _hover={{
         boxShadow: "md",
       }}
-      onClick={handleClick}
     >
-      <Text fontSize="sm" align="right">
-        # {id}
-      </Text>
       <Center>
         <Image
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
           alt={name}
         />
       </Center>
-      <Text size="md">{name}</Text>
+      <Text size="md">{nickname ? nickname : name}</Text>
+      {nickname && (
+        <Text fontSize="sm" align="right">
+          {name}
+        </Text>
+      )}
     </Card>
   );
 };
 
-export default PokemonCard;
+export default CaughtPokemonCard;

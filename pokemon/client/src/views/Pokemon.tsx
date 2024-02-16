@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Container, Skeleton, SkeletonText } from "@chakra-ui/react";
 // import PokemonDetail from "../component/PokemonDetail/PokemonDetail";
 import { Pokemon } from "../types";
-import { ROOT } from "../constants";
+import { POKE_ROOT } from "../constants/apis";
 import PokemonDetail from "../components/PokemonDetail";
 import { useParams } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const PokemonView: FC = () => {
   async function fetchPokemon() {
     setLoading(true);
     try {
-      const res = await fetch(`${ROOT}pokemon/${params.pokemon}`);
+      const res = await fetch(`${POKE_ROOT}pokemon/${params.pokemon}`);
       const result = await res.json();
       // console.log(result);
       setPokemon(result);

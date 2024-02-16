@@ -1,6 +1,4 @@
-import { PokemonType } from "./types";
-
-export const ROOT = 'https://pokeapi.co/api/v2/'
+import { PokemonType } from "../types";
 
 export const PokemonColors: Record<PokemonType, string> = {
   normal: "#A8A77A",

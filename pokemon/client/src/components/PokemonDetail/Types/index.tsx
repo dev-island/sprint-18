@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Box, Badge } from "@chakra-ui/react";
-import { PokemonColors } from "../../../constants";
+import { PokemonColors } from "../../../constants/PokemnonColors";
 import { PokemonType } from "../../../types";
 
 export type Props = {

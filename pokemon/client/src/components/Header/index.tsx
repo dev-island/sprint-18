@@ -1,15 +1,16 @@
 import { FC } from "react";
 import { Box, Flex, Image, Button, useColorMode } from "@chakra-ui/react";
 import PokemonLogo from "../../assets/pokemon-logo.svg";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuthContext from "../../hooks/useAuthContext";
 
-export type Props = {
-  goBack: () => void;
-};
-
-const Header: FC<Props> = () => {
+const Header: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated, logout } = useAuthContext();
   const { colorMode, toggleColorMode } = useColorMode();
+
+  const handleNavigateAuth = () => {};
 
   return (
     <Flex
@@ -29,14 +30,35 @@ const Header: FC<Props> = () => {
           height="50px"
         />
       </Box>
-      <Button
-        variant={"solid"}
-        size={"xl "}
-        width="175px"
-        onClick={toggleColorMode}
-      >
-        Toggle {colorMode === "light" ? "Dark" : "Light"}
-      </Button>
+      <Flex gap={4} align="center">
+        {isAuthenticated ? (
+          <>
+            <Link to="/profile">Profile</Link>
+            <Link to="/pokedex">Pokedex</Link>
+            <Button
+              p={2}
+              variant={"link"}
+              onClick={logout}
+              outline="none"
+              border="none"
+            >
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Link to="/sign-up">Sign Up</Link>
+        )}
+        <Link to="/">Home</Link>
+        <Button
+          p={2}
+          variant={"link"}
+          onClick={toggleColorMode}
+          outline="none"
+          border="none"
+        >
+          Toggle {colorMode === "light" ? "Dark" : "Light"}
+        </Button>
+      </Flex>
     </Flex>
   );
 };

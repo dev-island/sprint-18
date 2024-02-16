@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import Header, { Props } from '.';
+import Header from '.';
 
 const meta: Meta<typeof Header> = {
   argTypes: {},
@@ -11,10 +11,6 @@ const meta: Meta<typeof Header> = {
 export default meta;
 type Story = StoryObj<typeof Header>;
 
-const args: Props = {
-  goBack: () => {},
-};
-
 export const Primary: Story = {
-  args,
+  args: {},
 };
