@@ -32,10 +32,10 @@ const signUpInputs: Input[] = [
   ...loginInputs,
   {
     isRequired: true,
-    label: "Username",
-    name: "username",
-    placeholder: "test",
-    type: "text",
+    label: "Email",
+    name: "email",
+    placeholder: "test@test.com",
+    type: "email",
   },
 ];
 

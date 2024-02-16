@@ -3,13 +3,30 @@ import { Pokemon } from "../types";
 import { useUserContext } from "./useUserContext";
 import * as api from "../api/pokedex";
 export type OwnedPokemon = {
-  nickname: string;
+  nickname?: string;
+  name: string;
   _id: string;
-} & Pokemon;
+  height: number;
+  weight: number;
+  img: string;
+  id: number;
+};
+
+export type UncaughtPokemon = Omit<OwnedPokemon, "_id">;
 
 const usePokedex = () => {
   const { user, loading: userLoading } = useUserContext();
-  const [pokedex, setPokedex] = useState<OwnedPokemon[]>([]);
+  const [pokedex, setPokedex] = useState<OwnedPokemon[]>([
+    {
+      name: "wartortle",
+      height: 10,
+      weight: 225,
+      img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png",
+      id: 8,
+      _id: "1",
+      nickname: "Blastoise",
+    },
+  ]);
   const [catching, setCatching] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +54,7 @@ const usePokedex = () => {
     }
   };
 
-  const catchPokemon = async (pokemon: Pokemon) => {
+  const catchPokemon = async (pokemon: UncaughtPokemon) => {
     try {
       if (!userId) {
         throw new Error("User is not authenticated");
@@ -48,7 +65,7 @@ const usePokedex = () => {
       if (res.error) {
         throw res.error;
       }
-      if (!res.data) {
+      if (!res.data || !res.data._id) {
         throw new Error("Error: failed to catch pokemon");
       }
       setCatching(res.data._id);

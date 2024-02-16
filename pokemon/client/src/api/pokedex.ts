@@ -1,9 +1,8 @@
 import { API_ROOT } from "../constants/apis";
 import requestHandler from "../helpers/requestHandler";
-import { OwnedPokemon } from "../hooks/usePokedex";
-import { Pokemon } from "../types";
+import { OwnedPokemon, UncaughtPokemon } from "../hooks/usePokedex";
 
-export const catchPokemon = async (userId: string, pokemon: Pokemon) => {
+export const catchPokemon = async (userId: string, pokemon: UncaughtPokemon) => {
   return await requestHandler<OwnedPokemon>(
     `${API_ROOT}/users/${userId}/pokemon/`,
     "POST",

@@ -4,9 +4,11 @@ export type Props = {
   name: string;
   id: number;
   nickname?: string;
+  img: string;
+  idx: number;
 };
 
-const CaughtPokemonCard: FC<Props> = ({ name, id, nickname }) => {
+const CaughtPokemonCard: FC<Props> = ({ name, img, nickname, idx }) => {
   return (
     <Card
       variant="elevated"
@@ -18,15 +20,17 @@ const CaughtPokemonCard: FC<Props> = ({ name, id, nickname }) => {
         boxShadow: "md",
       }}
     >
+      <Text fontSize="sm" align="left">
+        {idx + 1}
+      </Text>
       <Center>
-        <Image
-          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
-          alt={name}
-        />
+        <Image src={img} alt={name} />
       </Center>
-      <Text size="md">{nickname ? nickname : name}</Text>
+      <Text size="md" fontWeight={700}>
+        {nickname ? nickname : name}
+      </Text>
       {nickname && (
-        <Text fontSize="sm" align="right">
+        <Text fontSize="sm" align="left">
           {name}
         </Text>
       )}

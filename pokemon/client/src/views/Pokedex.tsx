@@ -25,6 +25,8 @@ const PokemonList: FC = () => {
               name={p.name}
               id={idx + 1}
               nickname={p.nickname}
+              img={p.img}
+              idx={idx}
             />
           )): <Center>No Pokemon caught yet</Center>}
         </SimpleGrid>
