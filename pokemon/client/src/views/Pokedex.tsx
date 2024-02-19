@@ -6,7 +6,7 @@ import CaughtPokemonCard from "../components/CaughtPokemonCard";
 
 const PokemonList: FC = () => {
   const { loading, pokedex, getPokemon } = usePokedex()
-
+  console.log("pokedex", pokedex)
   useEffect(() => {
     getPokemon();
   }, []);

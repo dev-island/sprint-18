@@ -11,4 +11,12 @@ router.put("/auth", validate(authValidators.loginValidator), authentication.logi
 const users = require("./controllers/users");
 router.get("/users/:id", users.getUser);
 
+
+const pokedex = require("./controllers/pokedex");
+router.post("/users/:id/pokemon", pokedex.catchPokemon);
+router.get("/users/:id/pokemon", pokedex.getPokemon);
+router.put("/users/:id/pokemon/:pokemonId", pokedex.updateNickname);
+
+
+
 module.exports = router;

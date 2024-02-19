@@ -73,13 +73,13 @@ const PokemonDetail: FC<Pokemon> = ({
 
   const abilitiesStr = abilities.map(({ ability }) => ability.name).join(", ");
 
-  console.log({
-    name,
-    height,
-    weight,
-    img: sprites["front_default"],
-    id,
-  });
+  // console.log({
+  //   name,
+  //   height,
+  //   weight,
+  //   img: sprites["front_default"],
+  //   id,
+  // });
 
   const handleCatch = async () => {
     await catchPokemon({
@@ -89,6 +89,7 @@ const PokemonDetail: FC<Pokemon> = ({
       img: sprites['front_default'],
       id,
     });
+    onOpen();
   };
 
   const handleUpdate = async (nickname: string) => {

@@ -7,21 +7,20 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./context/AuthContext.tsx";
 import UserProvider from "./context/UserContext.tsx";
-import { QueryClient, QueryClientProvider } from "react-query";
-const queryClient = new QueryClient();
+import PokedexProvider from "./context/PokedexContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-            <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
         <AuthProvider>
           <UserProvider>
+            <PokedexProvider>
               <App />
+            </PokedexProvider>
           </UserProvider>
         </AuthProvider>
-      </QueryClientProvider>
-            </BrowserRouter>
+      </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>
 );

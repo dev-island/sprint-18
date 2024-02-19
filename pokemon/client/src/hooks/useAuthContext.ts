@@ -35,18 +35,24 @@ const useAuthContext = () => {
   };
 
   const signIn = async ({ username, password }: api.LoginRequest) => {
-    setLoading(true);
-    const { data, error } = await api.login({ username, password });
-    if (error) {
-      return alert(error);
+    try {
+      setLoading(true);
+      const { data, error } = await api.login({ username, password });
+      if (error) {
+        throw new Error(error);
+      }
+      if (!data) {
+        throw new Error("Error: no data returned from server");
+      }
+
+      setIsAuthenticated(true);
+      setToken(data.token);
+      setLoading(false);
+      navigate("/profile");
+    } catch (error) {
+      alert(error);
+      setLoading(false);
     }
-    if (!data) {
-      return alert("Error: no data returned from server");
-    }
-    setIsAuthenticated(true);
-    setToken(data.token);
-    setLoading(false);
-    navigate("/profile");
   };
 
   const logout = async () => {

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Pokemon } from "../types";
 import { useUserContext } from "./useUserContext";
 import * as api from "../api/pokedex";
+import { PokedexContext } from "../context/PokedexContext";
 export type OwnedPokemon = {
   nickname?: string;
   name: string;
@@ -16,19 +17,19 @@ export type UncaughtPokemon = Omit<OwnedPokemon, "_id">;
 
 const usePokedex = () => {
   const { user, loading: userLoading } = useUserContext();
-  const [pokedex, setPokedex] = useState<OwnedPokemon[]>([
-    {
-      name: "wartortle",
-      height: 10,
-      weight: 225,
-      img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png",
-      id: 8,
-      _id: "1",
-      nickname: "Blastoise",
-    },
-  ]);
+  const { pokedex: _pokedex, setPokedex, loading, setLoading } =
+    useContext(PokedexContext);
+  // {
+  //   name: "wartortle",
+  //   height: 10,
+  //   weight: 225,
+  //   img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png",
+  //   id: 8,
+  //   _id: "1",
+  //   nickname: "Blastoise",
+  // },
+  const pokedex = _pokedex as OwnedPokemon[];
   const [catching, setCatching] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const userId = user?._id;
 
@@ -43,11 +44,12 @@ const usePokedex = () => {
       if (res.error) {
         throw res.error;
       }
-      if (!res.data) {
+      if (!res?.data?.pokemon) {
         throw new Error("Error: failed to fetch pokedex data");
       }
-
-      setPokedex(res.data);
+      if (res.data.pokemon.length) {
+        setPokedex(res.data.pokemon);
+      }
     } catch (error) {
       console.error("Error: ", error);
       setLoading(false);
@@ -61,15 +63,18 @@ const usePokedex = () => {
       }
       setLoading(true);
       const res = await api.catchPokemon(userId, pokemon);
-      setLoading(false);
+      console.log("RESPONSE FROM CATCH POKEMON", res);
       if (res.error) {
         throw res.error;
       }
-      if (!res.data || !res.data._id) {
+
+      if (!res?.data?.pokemon?._id) {
         throw new Error("Error: failed to catch pokemon");
       }
-      setCatching(res.data._id);
-      setPokedex([...pokedex, res.data]);
+      const caughtPokemon = res.data.pokemon;
+      setCatching(caughtPokemon._id);
+      setPokedex([...pokedex, caughtPokemon]);
+      setLoading(false);
     } catch (error) {
       console.error("Error: ", error);
       setLoading(false);
@@ -87,7 +92,7 @@ const usePokedex = () => {
       if (res.error) {
         throw res.error;
       }
-      setPokedex((prev) => prev.filter((p) => p._id !== pokemonId));
+      setPokedex(pokedex.filter((p) => p._id !== pokemonId));
     } catch (error) {
       console.error("Error: ", error);
       setLoading(false);
@@ -105,8 +110,7 @@ const usePokedex = () => {
       if (res.error) {
         throw res.error;
       }
-      setPokedex((prev) =>
-        prev.map((p) => {
+      setPokedex(pokedex.map((p) => {
           if (p._id === catching) {
             return { ...p, nickname };
           }
@@ -122,6 +126,10 @@ const usePokedex = () => {
   const checkHasCaught = (id: number) => {
     return pokedex.some((p) => p.id === id);
   };
+
+  useEffect(() => {
+    console.log("pokedex", pokedex);
+  }, [pokedex]);
 
   return {
     pokedex,

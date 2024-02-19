@@ -27,7 +27,6 @@ const requestHandler = async <T>(
 
     const response = await fetch(url, options);
     const data = await response.json();
-    console.log(data);
     if (!response.ok) {
       const errString = data.errors
         ? data.errors.map((err: any) => err.msg).join(", ")
