@@ -16,12 +16,7 @@
 - In Class AWS DocumentDB demo
     - [OPTIONAL: AWS Document DB with Express](https://grishabh1992.medium.com/node-with-aws-documentdb-using-mongoose-f50b55f01edf)
     - [OPTIONAL: AWS Document DB with Compass](https://medium.com/@toluolatubosun/how-to-connect-to-aws-documentdb-using-mongodb-compass-7fd2809a1a33)
-
-# Week 2:
-
-- AWS Demo
-- RDS - PostGres
-- Document DB
+  
 
 Resources - DB Management tools:
 
@@ -39,3 +34,14 @@ Projects:
 - Optional:
     - Build a backend for your react todo list. Pick a DB, use an ORM
 
+# Week 2:
+- SQL
+  - Joins
+  - Relationships
+  - Knex Query tool
+  - Bookshelf ORM
+  - Running migrations
+  - Seeing the DB
+- AWS Demo
+  - RDS - PostGres
+  - Document DB
